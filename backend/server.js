@@ -13,9 +13,13 @@ const PORT = process.env.PORT || 5000;
 app.use(express.urlencoded({ extended: true })); // Middleware to parse URL-encoded bodies
 app.use(express.json()); // Middleware to parse JSON bodies
 app.use("/api/products", productRoute); // Import product routes
-
+app.use((req, res, next) => {
+  res.setHeader("Content-Security-Policy", 
+    "default-src 'self'; font-src 'self' https://fonts.gstatic.com; style-src 'self' https://fonts.googleapis.com;");
+  next();
+});
 
 app.listen(PORT, () => {
     connectDB();
-    console.log('Server is running on port 5000');
+    console.log('Server is running on port', PORT);
 });
